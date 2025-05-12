@@ -3,21 +3,21 @@
 # Stage 1: Build the React frontend
 FROM node:18 AS frontend-builder
 WORKDIR /app
-COPY front-end/package.json front-end/package-lock.json ./
+COPY frontend/package.json frontend/package-lock.json ./
 RUN npm install
-COPY front-end/ ./
+COPY frontend/ ./
 RUN npm run build
 
 # Stage 2: Build the Java backend
-FROM maven:3.9.4-eclipse-temurin-17 AS backend-builder
+FROM maven:3.9.9-eclipse-temurin-17 AS backend-builder
 WORKDIR /app
-COPY back-end/pom.xml ./
+COPY backend/ratematebackend/pom.xml ./
 RUN mvn dependency:go-offline
-COPY back-end/ ./
+COPY backend/ ./
 RUN mvn package -DskipTests
 
 # Stage 3: Create the final image
-FROM eclipse-temurin:17-jre
+FROM eclipse-temurin:21-jre
 WORKDIR /app
 
 # Copy the built frontend
