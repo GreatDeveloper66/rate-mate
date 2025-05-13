@@ -78,7 +78,7 @@
 						</exclude>
 					</excludes>
 					<mainClass>
-						com.ratemate.ratematebackend.RatemateBackendApplication
+						com.ratemate.ratematebackend.RatematebackendApplication
 					</mainClass>
 				</configuration>
 			</plugin>
