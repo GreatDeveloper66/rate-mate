@@ -30,7 +30,7 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose the backend port
 # EXPOSE 8080
-ENV PORT=3000
+ENV PORT=5000
 CMD ["npm", "start"]
 
 # Set the entry point to run the Java application
