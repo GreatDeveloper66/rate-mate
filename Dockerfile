@@ -26,7 +26,8 @@ COPY --from=frontend-builder /app/build ./frontend
 COPY --from=backend-builder /app/target/*.jar app.jar
 
 # Expose the backend port
-EXPOSE 8080
+# EXPOSE 8080
+EXPOSE 3000
 
 # Set the entry point to run the Java application
 ENTRYPOINT ["java", "-jar", "app.jar"]
