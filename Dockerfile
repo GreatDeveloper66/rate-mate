@@ -11,9 +11,8 @@ RUN npm run build
 # Stage 2: Build the Java backend
 FROM maven:3.9.9-eclipse-temurin-17 AS backend-builder
 WORKDIR /app
-COPY backend/ratematebackend/pom.xml ./
+COPY backend/ratematebackend/ ./
 RUN mvn dependency:go-offline
-COPY backend/ ./
 RUN mvn package -DskipTests
 
 # Stage 3: Create the final image
