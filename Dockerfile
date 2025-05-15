@@ -9,7 +9,7 @@ COPY frontend/ ./
 RUN npm run build
 
 # Stage 2: Build the Java backend
-FROM maven:3.9.9-eclipse-temurin-17 AS backend-builder
+FROM maven:3.9.9-eclipse-temurin-21 AS backend-builder
 WORKDIR /app
 COPY backend/ratematebackend/ ./
 RUN mvn dependency:go-offline
