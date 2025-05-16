@@ -26,7 +26,7 @@ COPY --from=frontend-builder /app/build ./frontend
 COPY --from=backend-builder /app/target/*.jar app.jar
 
 # Copy the Nginx configuration file
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose the backend port
 # EXPOSE 8080
