@@ -1,5 +1,3 @@
-# Use a multi-stage build to optimize the image size
-
 # Stage 1: Build the React frontend
 FROM node:18 AS frontend-builder
 WORKDIR /app
@@ -15,23 +13,21 @@ COPY backend/ratematebackend/ ./
 RUN mvn dependency:go-offline
 RUN mvn package -DskipTests
 
-# Stage 3: Create the final image
-FROM eclipse-temurin:21-jre
+# Stage 3: Create the final image with Nginx and Java backend
+FROM nginx:latest AS final-stage
 WORKDIR /app
 
-# Copy the built frontend
-COPY --from=frontend-builder /app/build ./frontend
+# Copy built frontend files to Nginx's serving directory
+COPY --from=frontend-builder /app/build /usr/share/nginx/html
 
-# Copy the built backend JAR
-COPY --from=backend-builder /app/target/*.jar app.jar
+# Copy Nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy the Nginx configuration file
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy the built backend JAR file
+COPY --from=backend-builder /app/target/*.jar /app/app.jar
 
-# Expose the backend port
-# EXPOSE 8080
-ENV PORT=5000
-CMD ["npm", "start"]
+# Expose the correct ports
+EXPOSE 80 5000
 
-# Set the entry point to run the Java application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Start backend and Nginx
+CMD ["sh", "-c", "java -jar /app/app.jar & nginx -g 'daemon off;'"]
